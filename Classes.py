@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 class Package:
    def __init__(self, package_id, address, deadline, city, zip_code, weight, status="At depot", delivery_time=None):
         self.package_id = package_id
@@ -56,3 +58,46 @@ class HashTable:
         for bucket in self.table:
             for key, package in bucket:
                 print(package)
+   
+
+class Truck:
+    def __init__(self, truck_id, start_time=datetime.strptime("08:00", "%H:%M")):
+        self.truck_id = truck_id
+        self.packages = []  # Holds Package objects
+        self.current_location = "Hub"
+        self.miles_traveled = 0.0
+        self.speed = 18  # mph
+        self.time = start_time
+        self.start_time = start_time
+        self.return_to_depot = False
+
+    def load_package(self, package):
+        if len(self.packages) < 16:
+            self.packages.append(package)
+            package.status = "En route"
+            return True
+        else:
+            print(f"Truck {self.truck_id} is full!")
+            return False
+
+    def deliver_package(self, package, distance):
+        travel_time = timedelta(hours = distance / self.speed)
+        self.time += travel_time
+        self.miles_traveled += distance
+        self.current_location = package.address
+        package.status = f"Delivered at {self.time.strftime('%H:%M')}"
+        package.delivery_time = self.time
+        self.packages.remove(package)
+
+    def return_to_depot(self):
+        # Simulate returning to hub (you'll calculate the distance externally)
+        self.current_location = "Depot"
+        self.return_to_depot = True
+
+    def __str__(self):
+        return (f"Truck {self.truck_id} | Packages: {len(self.packages)} | "
+                f"Current Location: {self.current_location} | "
+                f"Miles Traveled: {self.miles_traveled:.2f} | "
+                f"Time: {self.time.strftime('%H:%M')}")
+
+
