@@ -32,7 +32,7 @@ class HashTable:
     
 
         # Update if package with same ID already exists
-        if self.table[idx]:
+        if self.table[idx] is not None:
             for i, (k, v) in enumerate(self.table[idx]):
                 if key == package_id:
                     self.table[idx][i] = (package_id, package)
