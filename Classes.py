@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 
 class Package:
-   def __init__(self, package_id, address, deadline, city, zip_code, weight, status="At depot", delivery_time=None):
+   def __init__(self, package_id, address, deadline, city, zip_code, weight, status="At depot", delivery_time=None, notes=None):
         self.package_id = package_id
         self.address = address
         self.deadline = deadline
