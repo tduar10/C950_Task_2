@@ -16,7 +16,7 @@ for i in range(rows):
 addresses = name_df['Addr'].tolist()                            # Store addresses
 distance_matrix = distance_df.astype(float).values.tolist()     # Convert DataFrame to 2D list
 package_df = pd.read_csv('WGUPS Package File.csv')              # Load package data
-packages = cls.Hashtable(len(package_df))                       # Initialize hashtable
+packages = cls.HashTable(len(package_df))                       # Initialize hashtable
 
 # Load packages into hashtable
 for index, row in package_df.iterrows():
