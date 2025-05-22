@@ -28,12 +28,15 @@ class HashTable:
     
         idx = self._hash(package_id)
         package = Package(package_id, address, deadline, city, zip_code, weight, status, delivery_time)
+        # Check if the package ID already exists
+    
 
         # Update if package with same ID already exists
-        for i, (k, v) in enumerate(self.table[idx]):
-            if key == package_id:
-                self.table[idx][i] = (package_id, package)
-                return
+        if self.table[idx]:
+            for i, (k, v) in enumerate(self.table[idx]):
+                if key == package_id:
+                    self.table[idx][i] = (package_id, package)
+                    return
 
         # Otherwise, append the new package
         self.table[idx].append((package_id, package))
