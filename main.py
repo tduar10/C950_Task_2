@@ -20,11 +20,11 @@ packages = cls.HashTable(len(package_df))                       # Initialize has
 
 # Load packages into hashtable
 for index, row in package_df.iterrows():
-    packages[row['PackageID']] = cls.Package(
+    packages.insert(cls.Package(
         row['PackageID'], row['Address'], row['City'],
         row['Zip'], row['DeliveryDeadline'], row['Weight'],
         notes=row['SpecialNotes']
-    )
+    ))
 
 packages.display()  # Display all packages in the hashtable
 
