@@ -25,13 +25,7 @@ class HashTable:
         return hash(key)
 
     def insert(self, package_id, address, deadline, city, zip_code, weight, status="At depot", delivery_time=None, notes=None):
-        # Check if package_id is already in the table
-        if self.get(package_id):
-            print(f"Package ID {package_id} already exists. Updating the package.")
-            self.remove(package_id)
-        # Create a new package object
-        # and insert it into the hash table
-        # Hash the package_id to find the index 
+    
         idx = self._hash(package_id)
         package = Package(package_id, address, deadline, city, zip_code, weight, status, delivery_time)
 
