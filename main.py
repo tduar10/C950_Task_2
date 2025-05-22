@@ -1,4 +1,5 @@
 import pandas as pd
+import Classes as cls
 
 # Load distance data
 distance_df = pd.read_csv('distances.csv', header=None)
@@ -10,10 +11,15 @@ for i in range(len(distance_df)):
         if pd.isna(distance_df.iloc[i, j]):
             distance_df.iloc[i, j] = distance_df.iloc[j, i]
 
-# Store addresses
-addresses = name_df['Addr'].tolist()
+addresses = name_df['Addr'].tolist()                            # Store addresses
+distance_matrix = distance_df.astype(float).values.tolist()     # Convert DataFrame to 2D list
+package_df = pd.read_csv('WGUPS Package File.csv')				# Load package data
+packages = cls.Hashtable(len(pacakge_df))						# Initialize hashtable
 
-# Convert DataFrame to 2D list
-distance_matrix = distance_df.astype(float).values.tolist()
+# Load packages into hashtable
+for index, row in package_df:
+    packages[row[PackageID]] = cls.Package(row[PackageID], row[Address], row[City],	row[Zip], row[DeliveryDeadline], row[Weight], notes=row[SpecialNotes])
 
-package_df = pd.read_csv('WGUPS Package File.csv')
+
+        
+
