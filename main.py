@@ -1,5 +1,5 @@
 # Tristan Duarte Student ID: 011490410
-
+ 
 import pandas as pd
 import Classes as cls
 
@@ -18,7 +18,10 @@ for i in range(rows):
 addresses = name_df['Addr'].tolist()                            # Store addresses
 distance_matrix = distance_df.astype(float).values.tolist()     # Convert DataFrame to 2D list
 package_df = pd.read_csv('WGUPS Package File.csv')              # Load package data
-packages = cls.HashTable(len(package_df))                       # Initialize hashtable
+packages = cls.HashTable(len(package_df))  
+
+print (addresses)
+print(distance_matrix)                     # Initialize hashtable
 
 # Load packages into hashtable
 for index, row in package_df.iterrows():
@@ -83,5 +86,25 @@ truck3.load_package(packages.get(26))
 truck3.load_package(packages.get(33)) 
 truck3.load_package(packages.get(39)) 
 
+def deliver_packages(truck):
+
+
+current_time = cls.datetime.strptime("08:00", "%H:%M")  # Start time for all trucks
+available_drivers = 2  # Number of available drivers
+# Deliver packages using the trucks until all packages are delivered
+while truck1.packages or truck2.packages or truck3.packages:
+    if truck1.packages:
+        if not truck1.occupied and available_drivers > 0:
+            truck1.occupied = True
+            available_drivers -= 1
+        if truck1.occupied:
+    elif truck1.occupied:
+        truck1.occupied = False
+        available_drivers += 1
+
+    if truck2.packages:
+        truck2.deliver_packages(addresses, distance_matrix)
+    if truck3.packages:
+        truck3.deliver_packages(addresses, distance_matrix)
 
 # ...existing code...

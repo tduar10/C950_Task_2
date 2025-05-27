@@ -74,6 +74,7 @@ class Truck:
         self.time = start_time
         self.start_time = start_time
         self.return_to_depot = False
+        self.occupied = False
 
     def load_package(self, package):
         if len(self.packages) < 16:
