@@ -1,7 +1,9 @@
+# Tristan Duarte Student ID: 011490410
+
 import pandas as pd
 import Classes as cls
 
-# Load distance data
+# Load distance data using pandas
 distance_df = pd.read_csv('distances.csv', header=None)
 name_df = pd.read_csv('dest_names.csv')
 
@@ -27,5 +29,59 @@ for index, row in package_df.iterrows():
 
 packages.display()  # Display all packages in the hashtable
 
-# Create a truck object
+# Innitialize trucks
+truck1 = cls.Truck(1)
+truck2 = cls.Truck(2)
+truck3 = cls.Truck(3)
+
+# Manually load packages into trucks based on special requirements and delivery deadlines
+truck1.load_package(packages.get(1))  
+truck1.load_package(packages.get(2))  
+truck1.load_package(packages.get(3))  
+truck1.load_package(packages.get(4))  
+truck1.load_package(packages.get(5))
+truck1.load_package(packages.get(6))
+truck1.load_package(packages.get(13))
+truck1.load_package(packages.get(14)) 
+truck1.load_package(packages.get(15))
+truck1.load_package(packages.get(16)) 
+truck1.load_package(packages.get(19)) 
+truck1.load_package(packages.get(20)) 
+truck1.load_package(packages.get(29)) 
+truck1.load_package(packages.get(30)) 
+truck1.load_package(packages.get(31)) 
+truck1.load_package(packages.get(34)) 
+truck1.load_package(packages.get(37))
+truck1.load_package(packages.get(40))
+truck1.load_package(packages.get(21)) 
+truck1.load_package(packages.get(22)) 
+truck1.load_package(packages.get(24)) 
+
+truck2.load_package(packages.get(3)) 
+truck2.load_package(packages.get(18))  
+truck2.load_package(packages.get(36)) 
+truck2.load_package(packages.get(38)) 
+truck2.load_package(packages.get(5)) 
+truck2.load_package(packages.get(8)) 
+truck2.load_package(packages.get(11)) 
+truck2.load_package(packages.get(12)) 
+truck2.load_package(packages.get(17)) 
+truck2.load_package(packages.get(23)) 
+truck2.load_package(packages.get(27)) 
+truck2.load_package(packages.get(35)) 
+truck2.load_package(packages.get(2)) 
+truck2.load_package(packages.get(4)) 
+truck2.load_package(packages.get(7)) 
+truck2.load_package(packages.get(10)) 
+
+truck3.load_package(packages.get(6)) 
+truck3.load_package(packages.get(25)) 
+truck3.load_package(packages.get(28)) 
+truck3.load_package(packages.get(32)) 
+truck3.load_package(packages.get(9)) 
+truck3.load_package(packages.get(26)) 
+truck3.load_package(packages.get(33)) 
+truck3.load_package(packages.get(39)) 
+
+
 # ...existing code...
