@@ -22,7 +22,7 @@ class HashTable:
         self.table = [[] for i in range(size)]
 
     def _hash(self, key):
-        return hash(key)
+        return hash(key) % self.size
 
     def insert(self, package_id, address, deadline, city, zip_code, weight, status="At depot", delivery_time=None, notes=None):
     
