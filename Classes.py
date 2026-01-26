@@ -4,14 +4,12 @@ import datetime
 
 class HashTable:
     # Initialize the hash table with empty bucket list entries.
-    # Time Complexity: O(1) -> Assigning a fixed size list is constant.
     def __init__(self, initial_capacity=40):
         self.table = []
         for i in range(initial_capacity):
             self.table.append([])
 
     # Insert a new item into the hash table.
-    # Time Complexity: O(1) -> Appending to a list is average case constant.
     def insert(self, key, item, deadline, city, zip_code, weight, status):
         bucket = hash(key) % len(self.table)
         bucket_list = self.table[bucket]
@@ -19,7 +17,7 @@ class HashTable:
         # Update if the key is already in the bucket
         for kv in bucket_list:
             if kv[0] == key:
-                kv[1] = [item, deadline, city, zip_code, weight, status]
+                kv[1] = Package(key, item, deadline, city, zip_code, weight, status)
                 return True
 
         # If not found, append the new package to the bucket
@@ -28,8 +26,6 @@ class HashTable:
         return True
 
     # Search for an item with matching key in the hash table.
-    # Returns the Package object if found, or None if not found.
-    # Time Complexity: O(N) -> Worst case (collisions), but O(1) average.
     def search(self, key):
         bucket = hash(key) % len(self.table)
         bucket_list = self.table[bucket]
@@ -41,7 +37,6 @@ class HashTable:
         return None
 
     # Remove an item with matching key from the hash table.
-    # Time Complexity: O(N)
     def remove(self, key):
         bucket = hash(key) % len(self.table)
         bucket_list = self.table[bucket]

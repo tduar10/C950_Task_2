@@ -28,6 +28,11 @@ def load_package_data(filename):
         package_data = csv.reader(package_info)
         next(package_data)  # Skip header
         for package in package_data:
+            
+            # Skip empty rows
+            if len(package) < 7:
+                continue
+
             pID = int(package[0])
             pAddress = package[1]
             pCity = package[2]
@@ -35,6 +40,9 @@ def load_package_data(filename):
             pDeadline = package[5]
             pWeight = package[6]
             pStatus = "At Hub"
+
+            # Insert data into hash table
+            package_hash_table.insert(pID, pAddress, pDeadline, pCity, pZip, pWeight, pStatus)
 
             # Insert data into hash table
             package_hash_table.insert(pID, pAddress, pDeadline, pCity, pZip, pWeight, pStatus)
