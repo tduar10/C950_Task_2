@@ -12,6 +12,8 @@ with open("Distances.csv") as csvfile:
 with open("Dest_Names.csv") as csvfile:
     csv_address = csv.reader(csvfile)
     csv_address = list(csv_address)
+    # Remove header so the list index matches the distance matrix rows
+    csv_address.pop(0)
 
 with open("WGUPS Package File.csv") as csvfile:
     csv_package = csv.reader(csvfile)
@@ -47,11 +49,12 @@ def distance_between(x_value, y_value):
         distance = csv_distance[y_value][x_value]
     return float(distance)
 
-# Get the address ID number from the string address
+# Get the address index from the string address
 def extract_address(address):
-    for row in csv_address:
-        if address in row[2]:
-            return int(row[0])
+    for index, row in enumerate(csv_address):
+        if address in row[1]:
+            return index
+    return -1
 
 # Main algorithm to deliver packages
 # This uses a Nearest Neighbor algorithm to determine the most efficient route
