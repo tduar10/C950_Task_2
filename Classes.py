@@ -1,7 +1,58 @@
-from datetime import datetime, timedelta
+# Tristan Duarte Student ID: 011490410
+
+import datetime
+
+class HashTable:
+    # Initialize the hash table with empty bucket list entries.
+    # Time Complexity: O(1) -> Assigning a fixed size list is constant.
+    def __init__(self, initial_capacity=40):
+        self.table = []
+        for i in range(initial_capacity):
+            self.table.append([])
+
+    # Insert a new item into the hash table.
+    # Time Complexity: O(1) -> Appending to a list is average case constant.
+    def insert(self, key, item, deadline, city, zip_code, weight, status):
+        bucket = hash(key) % len(self.table)
+        bucket_list = self.table[bucket]
+
+        # Update if the key is already in the bucket
+        for kv in bucket_list:
+            if kv[0] == key:
+                kv[1] = [item, deadline, city, zip_code, weight, status]
+                return True
+
+        # If not found, append the new package to the bucket
+        p = Package(key, item, deadline, city, zip_code, weight, status)
+        bucket_list.append([key, p])
+        return True
+
+    # Search for an item with matching key in the hash table.
+    # Returns the Package object if found, or None if not found.
+    # Time Complexity: O(N) -> Worst case (collisions), but O(1) average.
+    def search(self, key):
+        bucket = hash(key) % len(self.table)
+        bucket_list = self.table[bucket]
+
+        # Search for the key in the bucket list
+        for kv in bucket_list:
+            if kv[0] == key:
+                return kv[1] # Returns the Package object
+        return None
+
+    # Remove an item with matching key from the hash table.
+    # Time Complexity: O(N)
+    def remove(self, key):
+        bucket = hash(key) % len(self.table)
+        bucket_list = self.table[bucket]
+
+        for kv in bucket_list:
+            if kv[0] == key:
+                bucket_list.remove([kv[0], kv[1]])
+
 
 class Package:
-   def __init__(self, package_id, address, deadline, city, zip_code, weight, status="At depot", delivery_time=None, notes=None):
+    def __init__(self, package_id, address, deadline, city, zip_code, weight, status):
         self.package_id = package_id
         self.address = address
         self.deadline = deadline
@@ -9,100 +60,27 @@ class Package:
         self.zip_code = zip_code
         self.weight = weight
         self.status = status
-        self.delivery_time = delivery_time
-   def __str__(self):
-           return (f"Package {self.package_id}: {self.address}, {self.city}, {self.zip_code}, "
-                   f"Deadline: {self.deadline}, Weight: {self.weight}kg, Status: {self.status}, "
-                   f"Delivered at: {self.delivery_time}")
-
-
-class HashTable:
-    def __init__(self, size=10):
-        self.size = size
-        self.table = [[] for i in range(size)]
-
-    def _hash(self, key):
-        return hash(key) % self.size
-
-    def insert(self, package_id, address, deadline, city, zip_code, weight, status="At depot", delivery_time=None, notes=None):
-    
-        idx = self._hash(package_id)
-        package = Package(package_id, address, deadline, city, zip_code, weight, status, delivery_time)
-        # Check if the package ID already exists
-    
-
-        # Update if package with same ID already exists
-        if self.table[idx] is not None:
-            for i, (k, v) in enumerate(self.table[idx]):
-                if key == package_id:
-                    self.table[idx][i] = (package_id, package)
-                    return
-
-        # Otherwise, append the new package
-        self.table[idx].append((package_id, package))
-
-    def get(self, package_id):
-        idx = self._hash(package_id)
-        for key, package in self.table[idx]:
-            if key == package_id:
-                return package
-        return None
-
-    def update_status(self, package_id, status, delivery_time=None):
-        package = self.get(package_id)
-        if package:
-            package.status = status
-            package.delivery_time = delivery_time
-
-    def remove(self, package_id):
-        idx = self._hash(package_id)
-        self.table[idx] = [(k, v) for k, v in self.table[idx] if k != package_id]
-
-    def display(self):
-        for bucket in self.table:
-            for key, package in bucket:
-                print(package)
-   
-
-class Truck:
-    def __init__(self, truck_id, start_time=datetime.strptime("08:00", "%H:%M")):
-        self.truck_id = truck_id
-        self.packages = []  # Holds Package objects
-        self.current_location = "Hub"
-        self.miles_traveled = 0.0
-        self.speed = 18  # mph
-        self.time = start_time
-        self.start_time = start_time
-        self.return_to_depot = False
-        self.occupied = False
-
-    def load_package(self, package):
-        if len(self.packages) < 16:
-            self.packages.append(package)
-            package.status = "En route"
-            return True
-        else:
-            print(f"Truck {self.truck_id} is full!")
-            return False
-
-    def deliver_package(self, package, distance):
-        travel_time = timedelta(hours = distance / self.speed)
-        self.time += travel_time
-        self.miles_traveled += distance
-        self.current_location = package.address
-        package.status = f"Delivered at {self.time.strftime('%H:%M')}"
-        package.delivery_time = self.time
-        self.packages.remove(package)
-
-    def return_to_depot(self):
-        # Simulate returning to hub (you'll calculate the distance externally)
-        self.current_location = "Depot"
-        self.return_to_depot = True
+        self.departure_time = None
+        self.delivery_time = None
 
     def __str__(self):
-        return (f"Truck {self.truck_id} | Packages: {len(self.packages)} | "
-                f"Current Location: {self.current_location} | "
-                f"Miles Traveled: {self.miles_traveled:.2f} | "
-                f"Time: {self.time.strftime('%H:%M')}")
+        return (f"ID: {self.package_id}, {self.address}, {self.city}, {self.zip_code}, "
+                f"Deadline: {self.deadline}, Weight: {self.weight}, Status: {self.status}, "
+                f"Departure: {self.departure_time}, Delivery: {self.delivery_time}")
 
 
+class Truck:
+    def __init__(self, truck_id, speed, capacity, packages, mileage, address, depart_time):
+        self.truck_id = truck_id
+        self.speed = speed
+        self.capacity = capacity
+        self.packages = packages
+        self.mileage = mileage
+        self.address = address
+        self.depart_time = depart_time
+        self.time = depart_time # Tracks the truck's internal clock
+
+    def __str__(self):
+        return (f"Truck ID: {self.truck_id}, Speed: {self.speed}, Capacity: {self.capacity}, "
+                f"Packages: {self.packages}, Mileage: {self.mileage}, Address: {self.address}, "
+                f"Depart Time: {self.depart_time}")
