@@ -44,6 +44,7 @@ class HashTable:
         for kv in bucket_list:
             if kv[0] == key:
                 bucket_list.remove([kv[0], kv[1]])
+                return
 
 
 class Package:
@@ -57,6 +58,33 @@ class Package:
         self.status = status
         self.departure_time = None
         self.delivery_time = None
+
+        # Address correction support (used for package 9)
+        self.corrected_address = None
+        self.corrected_zip = None
+        self.correction_time = None
+
+    # Register a known-future address correction without changing the address yet
+    def set_address_correction(self, new_address, new_zip, correction_time):
+        self.corrected_address = new_address
+        self.corrected_zip = new_zip
+        self.correction_time = correction_time
+
+    # Return the address that is accurate as of the given time
+    def address_for_time(self, current_time):
+        if (self.correction_time is not None
+                and current_time >= self.correction_time
+                and self.corrected_address is not None):
+            return self.corrected_address
+        return self.address
+
+    # Return the zip that is accurate as of the given time
+    def zip_for_time(self, current_time):
+        if (self.correction_time is not None
+                and current_time >= self.correction_time
+                and self.corrected_zip is not None):
+            return self.corrected_zip
+        return self.zip_code
 
     def __str__(self):
         return (f"ID: {self.package_id}, {self.address}, {self.city}, {self.zip_code}, "
