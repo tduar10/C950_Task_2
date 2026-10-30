@@ -56,6 +56,7 @@ class Package:
         self.zip_code = zip_code
         self.weight = weight
         self.status = status
+        self.truck_id = None
         self.departure_time = None
         self.delivery_time = None
 

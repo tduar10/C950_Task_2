@@ -84,9 +84,10 @@ def delivering_packages(truck):
     # Clear the truck list so we can re-add them in delivered order
     truck.packages.clear()
 
-    # Set departure time when the truck leaves the hub
+    # Set departure time and record truck assignment when the truck leaves the hub
     for package in upcoming_delivery:
         package.departure_time = truck.depart_time
+        package.truck_id = truck.truck_id
 
     # Cycle through the list until all packages are delivered
     while len(upcoming_delivery) > 0:
@@ -165,8 +166,8 @@ while True:
             convert_user_time = datetime.timedelta(hours=int(h), minutes=int(m))
 
             print(f"\nStatus of all packages at {format_td(convert_user_time)}:")
-            print(f"{'ID':<4} {'Address':<40} {'City':<20} {'Zip':<8} {'Weight':<8} {'Deadline':<10} {'Status':<12} {'Time'}")
-            print("-" * 120)
+            print(f"{'ID':<4} {'Truck':<6} {'Address':<40} {'City':<20} {'Zip':<8} {'Weight':<8} {'Deadline':<10} {'Status':<12} {'Time'}")
+            print("-" * 128)
 
             # Iterate through all 40 packages
             for packageID in range(1, 41):
@@ -187,7 +188,7 @@ while True:
                     status_at_time = "Delivered"
                     timestamp = f"Delivered {format_td(package.delivery_time)}"
 
-                print(f"{package.package_id:<4} {display_addr:<40} {package.city:<20} {display_zip:<8} {package.weight:<8} {package.deadline:<10} {status_at_time:<12} {timestamp}")
+                print(f"{package.package_id:<4} {package.truck_id:<6} {display_addr:<40} {package.city:<20} {display_zip:<8} {package.weight:<8} {package.deadline:<10} {status_at_time:<12} {timestamp}")
             print()
 
     except ValueError:
